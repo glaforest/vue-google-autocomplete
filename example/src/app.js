@@ -7,22 +7,28 @@ const app = new Vue({
     components: { VueGoogleAutocomplete },
 
     data: {
+        autocompleteText: '',
         address: ''
     },
 
     methods: {
         /**
-        * When the location found
-        * @param {Object} addressData Data of the found location
-        * @param {Object} placeResultData PlaceResult object
-        * @param {String} id Input container ID
-        */
-      getAddressData(addressData, placeResultData, id) {
+         * When the location found
+         * @param {Object} addressData Data of the found location
+         * @param {Object} placeResultData PlaceResult object
+         * @param {String} id Input container ID
+         */
+        getAddressData(addressData, placeResultData, id) {
             this.address = addressData;
-      },
+        },
 
-      handleError(error) {
-        alert(error)
-      }
+        updateAutoCompleteText(text) {
+            console.log(text)
+            this.autocompleteText = text
+        },
+
+        handleError(error) {
+            alert(error)
+        }
     }
 });

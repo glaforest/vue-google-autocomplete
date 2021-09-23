@@ -6,7 +6,7 @@
         :id="id"
         :placeholder="placeholder"
         :disabled="disabled"
-        v-model="autocompleteText"
+        :value="autocompleteText"
         @focus="onFocus()"
         @blur="onBlur()"
         @change="onChange"
@@ -52,6 +52,16 @@
           },
 
           classname: String,
+
+          autocompleteText: {
+            type: String,
+            default: ''
+          },
+
+          fillAutoCompleteInput: {
+              type: Boolean,
+              default: false
+          },
 
           placeholder: {
             type: String,
@@ -100,12 +110,6 @@
                  * @link https://developers.google.com/maps/documentation/javascript/reference#Autocomplete
                  */
                 autocomplete: null,
-
-                /**
-                 * Autocomplete input text
-                 * @type {String}
-                 */
-                autocompleteText: '',
 
                 geolocation: {
                     /**
@@ -184,9 +188,12 @@
                     // return returnData object and PlaceResult object
                     this.$emit('placechanged', this.formatResult(place), place, this.id);
 
-                    // update autocompleteText then emit change event
-                    this.autocompleteText = document.getElementById(this.id).value
-                    this.onChange()
+                    if(this.fillAutoCompleteInput) {
+                        this.$emit("update-autocomplete-text", document.getElementById(this.id).value);
+                    }
+                    else {
+                        this.$emit("update-autocomplete-text", ' ');
+                    }
                 }
             },
 
@@ -232,7 +239,7 @@
              * Clear the input
              */
             clear() {
-              this.autocompleteText = ''
+              this.$emit("update-autocomplete-text", '');
             },
 
             /**
@@ -254,7 +261,7 @@
              * @param  {String} value
              */
             update (value) {
-              this.autocompleteText = value
+              this.$emit("update-autocomplete-text", value);
             },
 
             /**
